@@ -20,3 +20,7 @@ Route::post('/login', [Api\AuthController::class, 'login'])
 Route::post('/logout', [Api\AuthController::class, 'logout'])
     ->name('logout');
 
+Route::apiResource('roles', Api\Admin\RolesController::class)->only([
+    'index', 'show', 'store', 'update', 'destroy'
+]);
+
