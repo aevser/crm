@@ -24,3 +24,7 @@ Route::apiResource('roles', Api\Admin\RolesController::class)->only([
     'index', 'show', 'store', 'update', 'destroy'
 ]);
 
+Route::apiResource('permissions', Api\Admin\PermissionsController::class)->only([
+    'index', 'show', 'store', 'update', 'destroy'
+]);
+
