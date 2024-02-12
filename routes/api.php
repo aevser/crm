@@ -31,6 +31,9 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::apiResource('leads', Api\Admin\LeadsController::class)->only([
         'index', 'show', 'store', 'update', 'destroy'
     ]);
+    Route::apiResource('hosts', Api\Admin\HostsController::class)->only([
+        'index', 'store', 'update', 'destroy'
+    ]);
     Route::post('/logout', [Api\AuthController::class, 'logout'])
         ->name('logout');
 });
