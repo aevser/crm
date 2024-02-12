@@ -13,10 +13,9 @@ class Create
      * Create a new job instance.
      */
     public function __construct(
-        private int $project_id,
         private int $user_id,
         private ?array $fields,
-        private?bool $manage_leads,
+        private ?bool $manage_leads,
         private ?bool $export_data,
         private ?bool $manage_permissions,
         private ?bool $manage_settings,
@@ -33,7 +32,6 @@ class Create
     public function handle()
     {
         $permissions = Permission::create([
-            'project_id' => $this->project_id,
             'user_id' => $this->user_id,
             'fields' => $this->fields,
             'manage_leads' => $this->manage_leads,
