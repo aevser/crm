@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use App\Events\LeadAdded;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -54,6 +55,8 @@ class LeadsController extends Controller
             utm_term: $request->utm_term,
             nextcall_date: $request->nextcall_date,
         );
+
+        LeadAdded::dispatch($leads);
 
         return response()->json(['success' => 'Лид успешно добавлен'], 200);
     }
