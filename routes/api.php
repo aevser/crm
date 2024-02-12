@@ -28,3 +28,7 @@ Route::apiResource('permissions', Api\Admin\PermissionsController::class)->only(
     'index', 'show', 'store', 'update', 'destroy'
 ]);
 
+Route::apiResource('projects', Api\Admin\ProjectsController::class)->only([
+    'index', 'show', 'store', 'update', 'destroy'
+]);
+
