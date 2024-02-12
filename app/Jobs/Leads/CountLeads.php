@@ -31,7 +31,7 @@ class CountLeads
                 ->whereDate('created_at', today())
                 ->count();
 
-            $leads_total = $project->leads()->conut();
+            $leads_total = $project->leads()->count();
 
             $project->update([
                 'leads_today' => $leads_today,
