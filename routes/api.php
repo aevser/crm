@@ -32,3 +32,7 @@ Route::apiResource('projects', Api\Admin\ProjectsController::class)->only([
     'index', 'show', 'store', 'update', 'destroy'
 ]);
 
+Route::apiResource('leads', Api\Admin\LeadsController::class)->only([
+    'index', 'show', 'store', 'update', 'destroy'
+]);
+
