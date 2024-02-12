@@ -15,24 +15,29 @@ use App\Http\Controllers\Api;
 |
 */
 
+Route::middleware('auth:sanctum')->group(function (){
+    Route::apiResource('roles', Api\Admin\RolesController::class)->only([
+        'index', 'show', 'store', 'update', 'destroy'
+    ]);
+
+    Route::apiResource('permissions', Api\Admin\PermissionsController::class)->only([
+        'index', 'show', 'store', 'update', 'destroy'
+    ]);
+
+    Route::apiResource('projects', Api\Admin\ProjectsController::class)->only([
+        'index', 'show', 'store', 'update', 'destroy'
+    ]);
+
+    Route::apiResource('leads', Api\Admin\LeadsController::class)->only([
+        'index', 'show', 'store', 'update', 'destroy'
+    ]);
+    Route::post('/logout', [Api\AuthController::class, 'logout'])
+        ->name('logout');
+});
+
 Route::post('/login', [Api\AuthController::class, 'login'])
     ->name('login');
-Route::post('/logout', [Api\AuthController::class, 'logout'])
-    ->name('logout');
 
-Route::apiResource('roles', Api\Admin\RolesController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
 
-Route::apiResource('permissions', Api\Admin\PermissionsController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
 
-Route::apiResource('projects', Api\Admin\ProjectsController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
-
-Route::apiResource('leads', Api\Admin\LeadsController::class)->only([
-    'index', 'show', 'store', 'update', 'destroy'
-]);
 
