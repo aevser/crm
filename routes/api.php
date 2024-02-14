@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,19 +23,25 @@ Route::middleware('auth:sanctum')->group(function (){
         'index', 'show', 'store', 'update', 'destroy'
     ]);
 
-    Route::apiResource('projects', Api\Admin\ProjectsController::class)->only([
+    Route::apiResource('projects', Api\Custom\ProjectsController::class)->only([
         'index', 'show', 'store', 'update', 'destroy'
     ]);
 
-    Route::apiResource('leads', Api\Admin\LeadsController::class)->only([
+    Route::apiResource('leads', Api\Custom\LeadsController::class)->only([
         'index', 'show', 'store', 'update', 'destroy'
     ]);
     Route::apiResource('hosts', Api\Admin\HostsController::class)->only([
         'index', 'store', 'update', 'destroy'
     ]);
-    Route::apiResource('leads-class', Api\Admin\LeadClassesController::class)->only([
+    Route::apiResource('leads-class', Api\Custom\LeadClassesController::class)->only([
         'index', 'store', 'update', 'destroy'
     ]);
+    Route::post('/assign-classes/{project_id}/{class_id}/{lead_id}', [Api\Custom\AssingClassToLeadController::class,
+        'assignClassToLead'])->name('assing.class');
+
+    Route::post('/remove-classes/{project_id}/{lead_id}', [Api\Custom\AssingClassToLeadController::class,
+    'removeClassFromLead'])->name('remove.class');
+
     Route::post('/logout', [Api\AuthController::class, 'logout'])
         ->name('logout');
 });
