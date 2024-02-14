@@ -14,6 +14,7 @@ class Create
      */
     public function __construct(
         private int $user_id,
+        private int $project_id,
         private ?array $fields,
         private ?bool $manage_leads,
         private ?bool $export_data,
@@ -32,6 +33,7 @@ class Create
     public function handle()
     {
         $permissions = Permission::create([
+            'project_id' => $this->project_id,
             'user_id' => $this->user_id,
             'fields' => $this->fields,
             'manage_leads' => $this->manage_leads,
