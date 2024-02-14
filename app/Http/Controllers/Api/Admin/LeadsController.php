@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Events\LeadAdded;
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LeadsController extends Controller
 {
@@ -24,41 +26,54 @@ class LeadsController extends Controller
 
     public function store(Request $request)
     {
-        $leads = \App\Jobs\Leads\Create::dispatchSync(
-            class_id: $request->class_id,
-            project_id: $request->project_id,
-            owner: $request->owner,
-            company: $request->company,
-            status: $request->status,
-            name: $request->name,
-            surname: $request->surname,
-            patronymic: $request->patronymic,
-            full_name: $request->full_name,
-            phone: $request->phone,
-            entries: $request->entries,
-            email: $request->email,
-            cost: $request->cost,
-            comment: $request->comment,
-            city: $request->city,
-            region: $request->region,
-            manual_region: $request->manual_region,
-            manual_city: $request->manual_city,
-            host: $request->host,
-            ip: $request->ip,
-            source: $request->source,
-            url_query_string: $request->url_query_string,
-            utm: $request->utm,
-            utm_medium: $request->utm_medium,
-            utm_source: $request->utm_source,
-            utm_campaign: $request->utm_campaign,
-            utm_content: $request->utm_content,
-            utm_term: $request->utm_term,
-            nextcall_date: $request->nextcall_date,
-        );
+        $hostsReferer = $request->server('HTTP_REFERER');
 
-        LeadAdded::dispatch($leads);
+        $host = $hostsReferer ?? $request->host;
 
-        return response()->json(['success' => 'Лид успешно добавлен'], 200);
+        $projectId = $request->project_id;
+
+        $project = Project::with('hosts')->findOrFail($projectId);
+
+        if($project && $project->hosts->contains('url', $host)){
+
+            $leads = \App\Jobs\Leads\Create::dispatchSync(
+                class_id: $request->class_id,
+                project_id: $request->project_id,
+                owner: $request->owner,
+                company: $request->company,
+                status: $request->status,
+                name: $request->name,
+                surname: $request->surname,
+                patronymic: $request->patronymic,
+                full_name: $request->full_name,
+                phone: $request->phone,
+                entries: $request->entries,
+                email: $request->email,
+                cost: $request->cost,
+                comment: $request->comment,
+                city: $request->city,
+                region: $request->region,
+                manual_region: $request->manual_region,
+                manual_city: $request->manual_city,
+                host: $host,
+                ip: $request->ip,
+                source: $request->source,
+                url_query_string: $request->url_query_string,
+                utm: $request->utm,
+                utm_medium: $request->utm_medium,
+                utm_source: $request->utm_source,
+                utm_campaign: $request->utm_campaign,
+                utm_content: $request->utm_content,
+                utm_term: $request->utm_term,
+                nextcall_date: $request->nextcall_date,
+            );
+
+//            LeadAdded::dispatch($leads);
+
+            return response()->json(['success' => 'Лид успешно добавлен'], 200);
+        }else{
+            return response()->json(['error' => 'Ограничение хоста'], 400);
+        }
     }
 
     public function update(Request $request, $leadsId)
